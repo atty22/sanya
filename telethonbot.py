@@ -1,5 +1,6 @@
 #!/bon/python
 # https://regexone.com/
+#
 # config
 # database 1 only when it is expressly called
 # database 2 always
@@ -12,7 +13,7 @@ from telethon import TelegramClient, events
 config = json.load(open('config.json'))
 client = TelegramClient('anon', config["api_id"], config["api_hash"])
 
-mood = 0  # in base ad hour
+mood = 0
 
 
 def defmood() -> int:
@@ -29,7 +30,7 @@ def defmood() -> int:
 
 # main
 @client.on(events.NewMessage())
-async def callinmessage(event):
+async def replay(event):
     _msgdbnt = json.load(open('db2.json'))  # Open msg database for no tag
     _other = json.load(open('db3.json'))  # other stuff
     _msg = event.raw_text.lower()
