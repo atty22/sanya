@@ -10,4 +10,4 @@ Sanya is the best telegram chatbot that you'll ever encounter.
 
 You just have to edit the `config.ini` file with your information and then run `Main.py`.
 
-### Have fun!
+### Have fun!!
