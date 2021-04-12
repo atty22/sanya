@@ -14,6 +14,7 @@ client = TelegramClient('anon', config["api_id"], config["api_hash"])
 
 mood = 0  # in base ad hour
 
+
 def defmood() -> int:
     hour = int(time.strftime('%H'))
     if 0 <= hour < config["sleep"]:
@@ -24,6 +25,7 @@ def defmood() -> int:
         return 2
     else:
         return 0
+
 
 # main
 @client.on(events.NewMessage())
@@ -42,10 +44,11 @@ async def callinmessage(event):
         _msgdb = json.load(open('db1.json'))  # Open msg database
         for element in _msgdb:
             if element in _msg:
-                if _mood==0 and element in _other["custommessages"]:
+                if _mood == 0 and element in _other["custommessages"]:
                     if len(_other["custommessages"][element]) == 1:
                         _mood = 0
-                    await event.reply(_other["custommessages"][element][random.randrange(0, (len(_other["custommessages"][element])))])
+                    await event.reply(_other["custommessages"][element][
+                                          random.randrange(0, (len(_other["custommessages"][element])))])
                     return
                 else:
                     if len(_msgdb[element]) == 1:
@@ -56,6 +59,7 @@ async def callinmessage(event):
             await event.reply(_other["elsewhensleep"][random.randrange(0, (len(_other["elsewhensleep"])))])
         else:
             await event.reply(_other["else"][random.randrange(0, (len(_other["else"])))])
+
 
 client.start()
 client.run_until_disconnected()
