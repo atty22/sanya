@@ -1,4 +1,4 @@
-""" This file runs the entire bot and connects the various elements of it. """
+""" This file runs the entire bot and connects the various elements of it.   """
 from core import sanya, config
 from termcolor import colored
 from core import MoodChatBot
