@@ -23,9 +23,8 @@ async def mood_chat_bot_handler(event):
                     _mood=0
                 (await (event.reply(available_keys[word][_mood])) if available_keys[word][_mood] != "" else None)
                 return
-        if config["!DEFAULT!"]["bot_name"] in event.raw_text.lower().replace(" ", ""):
-            await event.reply(get_messages("exceptions", "mood_chat_bot")["onlysanya"]
-                              [randrange(0, len(get_messages("exceptions", "mood_chat_bot")["onlysanya"]))])
+        if config["!DEFAULT!"]["bot_name"] in event.raw_text.lower().replace(" ", "") or event.is_private:
+            await event.reply(time_key["other"][randrange(0, len(time_key["other"]))])
             return
     if event.is_group:
         available_keys = (get_messages("groups_auto", "mood_chat_bot") if event.message.reply_to_msg_id is None
@@ -36,3 +35,4 @@ async def mood_chat_bot_handler(event):
                 if len(available_keys[word]) !=3:
                     _mood=0
                 await event.reply(available_keys[word][_mood])
+
