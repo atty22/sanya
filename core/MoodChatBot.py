@@ -30,7 +30,7 @@ async def mood_chat_bot_handler(event):
     if event.is_group:
         available_keys = (get_messages("groups_auto", "mood_chat_bot") if event.message.reply_to_msg_id is None
                           else
-                          {**get_messages("reply", "mood_chat_bot"), **get_messages("groups_auto", "mood_chat_bot")})
+                          {**get_messages("normal", "mood_chat_bot"), **get_messages("reply", "mood_chat_bot"), **get_messages("groups_auto", "mood_chat_bot")})
         for word in available_keys:
             if word in event.raw_text.lower():
                 if len(available_keys[word]) !=3:
