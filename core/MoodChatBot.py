@@ -9,7 +9,7 @@ async def mood_chat_bot_handler(event):
     _mood = mood()
     if event.is_private or event.is_group and config["!DEFAULT!"]["bot_name"] in event.raw_text.lower():
         available_keys = ({**get_messages("normal", "mood_chat_bot"), **get_messages("groups_auto", "mood_chat_bot")}
-                          if event.message.reply_to_msg_id is None
+                          if event.mentioned is False
                           else {**get_messages("normal", "mood_chat_bot"), **get_messages("reply"),
                                 **get_messages("groups_auto", "mood_chat_bot")})
         time_key = get_messages("exceptions", "mood_chat_bot")["time"][mood_to_words(_mood)]
@@ -27,7 +27,7 @@ async def mood_chat_bot_handler(event):
             await event.reply(time_key["other"][randrange(0, len(time_key["other"]))])
             return
     if event.is_group:
-        available_keys = (get_messages("groups_auto", "mood_chat_bot") if event.message.reply_to_msg_id is None
+        available_keys = (get_messages("groups_auto", "mood_chat_bot") if event.mentioned is False
                           else
                           {**get_messages("normal", "mood_chat_bot"), **get_messages("reply", "mood_chat_bot"), **get_messages("groups_auto", "mood_chat_bot")})
         for word in available_keys:
