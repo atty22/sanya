@@ -1,6 +1,7 @@
-import time
+from time import strftime
 import json
-from core import config
+from core import config, sanya
+import sqlite3
 
 
 def dump(obj):
@@ -14,7 +15,7 @@ def mood() -> int:
     Returns:
          int: The mood (time of the day: 0 = night, 1 = sleeping, 2 = day)
     """
-    hour = int(time.strftime('%H'))
+    hour = int(strftime('%H'))
     if 0 <= hour < int(config["!HOURS!"]["sleeping"]):
         return 0
     elif int(config["!HOURS!"]["sleeping"]) <= hour < int(config["!HOURS!"]["day"]):
@@ -69,4 +70,35 @@ def get_messages(file: str, section: str = "") -> dict:
     if type(section) is not str:
         raise ValueError("section must be a string value")
     else:
-        return json.load(open("messages/{section}{file}.json".format(section=section + "/", file=file), encoding="utf-8"))
+        return json.load(
+            open("messages/{section}{file}.json".format(section=section + "/", file=file), encoding="utf-8"))
+
+
+def database(chat_id):
+    sql = sqlite3.connect("database.db")
+    cur = sql.cursor()
+    cur.execute(
+        "CREATE TABLE IF NOT EXISTS chat ( chat_id INTEGER NOT NULL UNIQUE, active INTEGER DEFAULT 1)")
+    sql.commit()
+    cur.execute("SELECT * FROM chat WHERE chat_id= '{}'".format(chat_id))
+    raw = cur.fetchone()
+    if raw is None:
+        cur.execute("INSERT INTO chat VALUES ('{}', 1)".format(chat_id))
+        sql.commit()
+        sql.close()
+        return "aggiungo chat a database per poter ricevere messaggi casuali"
+    else:
+        if raw[1] == False:
+            cur.execute("UPDATE chat SET active = 1 WHERE chat_id = '{}'".format(chat_id))
+            sql.commit()
+            sql.close()
+            return "la chat è già stata aggiunta in passato ma è stata disattivata, la ho riattivata"
+        elif raw[1] == True:
+            cur.execute("UPDATE chat SET active = 0 WHERE chat_id = '{}'".format(chat_id))
+            sql.commit()
+            sql.close()
+            return "la chat è già stata attivata, quindi la ho disattivata"
+        else:
+            sql.close()
+            return "coglione"
+

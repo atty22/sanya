@@ -1,8 +1,7 @@
 #!/bin/python
 """ This file runs the entire bot and connects the various elements of it."""
-from core import sanya, config
+from core import sanya, config, MoodChatBot
 from termcolor import colored
-from core import MoodChatBot
 
 
 sanya.start(bot_token=config["!TELEGRAM!"]["bot_token"])
