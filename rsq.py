@@ -8,7 +8,8 @@ from time import strftime
 import telebot  # pip install pyTelegramBotAPI
 from os import listdir
 
-bot_token = "1794569431:AAEnC99GBFyWJZvkL78G_oNeUyAsPhsW67Q"
+bot_token = 
+
 tb = telebot.TeleBot(bot_token)
 
 
