@@ -3,18 +3,20 @@ from core import sanya, events, config
 from os import listdir
 from random import randrange
 from utils import mood, get_messages, mood_to_words, database
+from datetime import datetime
 
 
 @sanya.on(events.NewMessage)
 async def mood_chat_bot_handler(event):
-    await event.get_chat()
-    chat_id = event.chat_id
+    timestart = datetime.now()
     if "/randomsong" in event.raw_text.lower():
-        await sanya.send_file(chat_id, str("messages/audio/" + listdir("messages/audio")[
+        await event.get_chat()
+        await sanya.send_file(event.chat_id, str("messages/audio/" + listdir("messages/audio")[
             randrange(0, len(listdir("messages/audio")))]))
         return
     if "/toggle" in event.raw_text.lower():
-        await event.reply(database(chat_id))
+        await event.get_chat()
+        await event.reply(database(event.chat_id))
         return
     _mood = mood()
     if event.is_private or event.is_group and config["!DEFAULT!"]["bot_name"] in event.raw_text.lower():
@@ -33,6 +35,9 @@ async def mood_chat_bot_handler(event):
                     _mood = 0
                 (await (event.reply(available_keys[word][_mood])) if available_keys[word][_mood] != "" else None)
                 return
+        if "/ping" in event.raw_text.lower():
+            await event.reply(str("pong in :" + str(datetime.now() - timestart)[10:] + "ms"))
+            return
         if config["!DEFAULT!"]["bot_name"] in event.raw_text.lower().replace(" ", "") or event.is_private:
             await event.reply(time_key["other"][randrange(0, len(time_key["other"]))])
             return
@@ -46,4 +51,6 @@ async def mood_chat_bot_handler(event):
                 if len(available_keys[word]) != 3:
                     _mood = 0
                 await event.reply(available_keys[word][_mood])
-
+        if "ping" in event.raw_text.lower():
+            await event.reply(str("pong in " + str(datetime.now() - timestart)[10:] + "ms"))
+            return
