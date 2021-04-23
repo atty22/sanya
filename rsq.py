@@ -7,6 +7,7 @@ from utils import get_messages
 from time import strftime, sleep
 import telebot  # pip install pyTelegramBotAPI
 from os import listdir
+from core import config
 
 sleep(randrange(0, 14400))
 
@@ -36,6 +37,6 @@ if birtday() is False:
             str("messages/audio/" + listdir("messages/audio")[randrange(0, len(listdir("messages/audio")))]),
             'rb')
         for i in id_list:
-            tb.send_audio(chat_id, audio)
+            tb.send_audio(i, audio)
     else:
         print("no")
