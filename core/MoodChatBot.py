@@ -36,7 +36,7 @@ async def mood_chat_bot_handler(event):
                 (await (event.reply(available_keys[word][_mood])) if available_keys[word][_mood] != "" else None)
                 return
         if "/ping" in event.raw_text.lower():
-            await event.reply(str("pong in :" + str(datetime.now() - timestart)[10:] + "ms"))
+            await event.reply(str("pong in :" + str(datetime.now() - timestart)[10:] + "ns"))
             return
         if config["!DEFAULT!"]["bot_name"] in event.raw_text.lower().replace(" ", "") or event.is_private:
             await event.reply(time_key["other"][randrange(0, len(time_key["other"]))])
@@ -52,5 +52,5 @@ async def mood_chat_bot_handler(event):
                     _mood = 0
                 await event.reply(available_keys[word][_mood])
         if "ping" in event.raw_text.lower():
-            await event.reply(str("pong in " + str(datetime.now() - timestart)[10:] + "ms"))
+            await event.reply(str("pong in " + str(datetime.now() - timestart)[10:] + "ns"))
             return
