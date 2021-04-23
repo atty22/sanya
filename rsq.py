@@ -4,13 +4,13 @@
 import sqlite3
 from random import randrange
 from utils import get_messages
-from time import strftime
+from time import strftime, sleep
 import telebot  # pip install pyTelegramBotAPI
 from os import listdir
 
-bot_token = 
+sleep(randrange(0, 14400))
 
-tb = telebot.TeleBot(bot_token)
+tb = telebot.TeleBot(config["!TELEGRAM!"]["bot_token"])
 
 
 def birtday():
@@ -29,7 +29,6 @@ cur.execute("SELECT * FROM chat WHERE active= 1")
 list = cur.fetchall()
 sql.close()
 id_list = [int(item[0]) for item in list]
-
 if birtday() is False:
     if randrange(0,5) == 3:
         print("si")
